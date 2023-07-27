@@ -386,7 +386,6 @@ class SQLDatabase:
         raw_command = text(command)
         bound_command = raw_command.bindparams(**params)
         compiled_command = bound_command.compile(self._engine, compile_kwargs={"literal_binds": True}).string
-        print(compiled_command)
         return compiled_command
 
     def _execute(self, command: str, fetch: Optional[str] = "all") -> Sequence:
