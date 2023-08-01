@@ -2,7 +2,7 @@
 from __future__ import annotations
 
 import warnings
-from typing import Any, Iterable, List, Optional, Sequence, Dict
+from typing import Any, Dict, Iterable, List, Optional, Sequence
 
 import sqlalchemy
 from sqlalchemy import MetaData, Table, create_engine, inspect, select, text
