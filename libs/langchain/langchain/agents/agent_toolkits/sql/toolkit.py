@@ -6,12 +6,12 @@ from langchain.pydantic_v1 import Field
 from langchain.schema.language_model import BaseLanguageModel
 from langchain.tools import BaseTool
 from langchain.tools.sql_database.tool import (
+    ColumnCardinalitySQLDataBaseTool,
+    DistinctValuesSQLDataBaseTool,
     InfoSQLDatabaseTool,
     ListSQLDatabaseTool,
     QuerySQLCheckerTool,
     QuerySQLDataBaseTool,
-    ColumnCardinalitySQLDataBaseTool,
-    DistinctValuesSQLDataBaseTool
 )
 from langchain.utilities.sql_database import SQLDatabase
 
@@ -74,7 +74,7 @@ class SQLDatabaseToolkit(BaseToolkit):
         )
         distinct_values_sql_database_tool_description = (
             "Input to this tool is a table name and a column name in the format: "
-            "TABLE_NAME.COLUMN_NAME, output is the distinct values of the column on the table."
+            "TABLE_NAME.COLUMN_NAME, output is the distinct values of the column."
         )
         distinct_values_sql_database_tool = DistinctValuesSQLDataBaseTool(
             db=self.db, description=distinct_values_sql_database_tool_description

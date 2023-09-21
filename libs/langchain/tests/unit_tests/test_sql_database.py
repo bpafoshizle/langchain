@@ -125,7 +125,8 @@ def test_sql_database_run() -> None:
     expected_output = f"[(13, 'Harrison', '{user_bio}')]"
     assert output == expected_output
 
-def test_sql_database_compile() -> None:
+
+def test_sql_database_compile_command() -> None:
     """Test that commands can be run successfully and returned in correct format."""
     engine = create_engine("sqlite:///:memory:")
     metadata_obj.create_all(engine)
@@ -136,14 +137,19 @@ def test_sql_database_compile() -> None:
         conn.execute(stmt)
     db = SQLDatabase(engine)
 
-    raw_command = "select distinct user.user_name from user order by user_name LIMIT :limit"
+    raw_command = (
+        "select distinct user.user_name from user order by user_name LIMIT :limit"
+    )
     params = {"limit": 24}
     command = db.compile(raw_command, params)
-    expected_command = "select distinct user.user_name from user order by user_name LIMIT 24"
+    expected_command = (
+        "select distinct user.user_name from user order by user_name LIMIT 24"
+    )
     assert command == expected_command
     output = db.run(command)
     expected_output = f"[('bpafoshizle',)]"
     assert output == expected_output
+
 
 def test_sql_database_run_update() -> None:
     """Test commands which return no rows return an empty string."""
