@@ -104,7 +104,16 @@ class DistinctValuesSQLDataBaseTool(BaseSQLDatabaseTool, BaseTool):
         run_manager: Optional[CallbackManagerForToolRun] = None,
     ) -> str:
         """Execute the query, return the results or an error message."""
-        query = f"SELECT DISTINCT {tool_input} as {tool_input.split('.')[1]} FROM {tool_input.split('.')[0]} LIMIT :limit"
+        table_name = tool_input.split('.')[0]
+        column_name = tool_input.split('.')[1]
+        column_full_name = tool_input
+        
+        if(self.db.dialect == "mssql"):
+            query = f"SELECT DISTINCT TOP :limit {column_full_name} as {column_name} FROM {table_name}"
+        elif(self.db.dialect == "oracle"):
+            query = f"SELECT DISTINCT {column_full_name} as {column_name} FROM {table_name} FETCH FIRST :limit ROWS ONLY"
+        else:
+            query = f"SELECT DISTINCT {column_full_name} as {column_name} FROM {table_name} LIMIT :limit"
         params = {"limit": 50}
         compiled_query = self.db.compile(query, params)
         return self.db.run_no_throw(compiled_query)
